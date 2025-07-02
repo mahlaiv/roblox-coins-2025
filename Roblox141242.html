@@ -277,7 +277,7 @@
     <button class="confirm-btn" id="confirmBtn">Confirm</button>
     <div class="slider-block">
       <div class="slider-label">
-        Выбери вручную: 
+        Enter your quantity: 
         <span class="slider-value" id="sliderValue">800</span>
       </div>
       <input type="range" min="800" max="10000" step="100" value="800" class="slider" id="robuxSlider">
@@ -292,12 +292,12 @@
   <div class="modal" id="successModal">
     <div class="modal-content">
       <img src="https://i.ibb.co/nd9W4PJ/5289675.png" alt="Success!">
-      <div class="modal-success">Монеты успешно отправлены!</div>
-      <button class="modal-btn" id="closeModalBtn">Закрыть</button>
+      <div class="modal-success">Coins have been successfully sent!!</div>
+      <button class="modal-btn" id="closeModalBtn">Close</button>
     </div>
   </div>
   <footer>
-    <span>&copy; 2025 Roblox UI Example</span>
+    <span>&copy; 2025 Roblox Coins Sender</span>
   </footer>
   <script>
     // Выбор монет через квадраты
@@ -343,7 +343,7 @@
 
     confirmBtn.addEventListener('click', () => {
       if (!selected) {
-        alert('Выберите количество монет!');
+        alert('Choose the number of coins');
         return;
       }
       mainContent.style.display = 'none';
