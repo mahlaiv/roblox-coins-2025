@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Roblox Robux Sender</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #fffbe7 0%, #ffe6f7 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .container {
+      margin-top: 38px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px 28px 28px 28px;
+      box-shadow: 0 6px 32px 0 rgba(34, 34, 54, 0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 320px;
+      transition: box-shadow 0.15s;
+    }
+    .avatar {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #f7e6b2;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 16px #f7e6b280;
+      background: #fff;
+    }
+    .username {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 24px;
+      color: #222;
+      letter-spacing: 0.7px;
+    }
+    .choices {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .choice {
+      border: 2px solid #f5e7bb;
+      background: #fffef3;
+      border-radius: 15px;
+      font-size: 1.08rem;
+      padding: 20px 0 10px 0;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.18s, transform 0.14s;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      position: relative;
+      user-select: none;
+    }
+    .choice.selected {
+      border: 2.3px solid #e9c143;
+      background: #fff6c4;
+      box-shadow: 0 1px 8px 0 #ffeea570;
+      transform: scale(1.04);
+    }
+    .choice.selected::after {
+      content: '✔';
+      color: #25ce3c;
+      font-size: 1.35em;
+      position: absolute;
+      top: 7px;
+      right: 14px;
+      font-weight: bold;
+      opacity: 0.92;
+    }
+    .choice img {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 4px;
+    }
+    .confirm-btn {
+      margin-top: 13px;
+      background: linear-gradient(90deg, #4ee671 40%, #2ecc40 100%);
+      color: #fff;
+      font-size: 1.17rem;
+      font-weight: 600;
+      padding: 13px 0;
+      width: 100%;
+      border: none;
+      border-radius: 11px;
+      box-shadow: 0 2px 7px #00000016;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.17s;
+    }
+    .confirm-btn:active {
+      background: linear-gradient(90deg, #35c74c 40%, #208c2b 100%);
+    }
+    .sending-block {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 350px;
+      min-width: 320px;
+      margin-top: 75px;
+      background: rgba(255,255,255,0.87);
+      border-radius: 17px;
+      box-shadow: 0 2px 16px 0 #d3c79535;
+      animation: fadeIn 0.4s;
+    }
+    .sending-robux {
+      width: 104px;
+      height: 104px;
+      margin-bottom: 27px;
+      margin-top: 18px;
+    }
+    .sending-text {
+      font-size: 1.28rem;
+      font-weight: bold;
+      color: #353;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+    .loader {
+      border: 5px solid #f5eecb;
+      border-top: 5px solid #e9c143;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      animation: spin 0.9s linear infinite;
+      margin-bottom: 14px;
+    }
+    @keyframes spin {
+      0% {transform: rotate(0deg);}
+      100% {transform: rotate(360deg);}
+    }
+    @keyframes fadeIn {
+      0% {opacity:0; transform: scale(0.97);}
+      100% {opacity:1; transform: scale(1);}
+    }
+    .dot {
+      opacity: 0.3;
+      font-size: 1.4em;
+      animation: blink 1.2s infinite;
+    }
+    .dot.one  {animation-delay: 0s;}
+    .dot.two  {animation-delay: 0.25s;}
+    .dot.three{animation-delay: 0.5s;}
+    @keyframes blink {
+      0%, 80%, 100% {opacity: 0.18;}
+      30% {opacity: 1;}
+    }
+    footer {
+      margin-top: 34px;
+      font-size: 0.97em;
+      color: #aaa;
+      text-align: center;
+    }
+    @media (max-width: 500px) {
+      .container, .sending-block {min-width: unset; width: 96vw; max-width: 410px;}
+      .sending-block {height: 300px;}
+      .avatar {width: 96px; height: 96px;}
+      .sending-robux {width: 80px; height: 80px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="main-content">
+    <img src="https://i.ibb.co/5gDY4c3b/0fb78675da6a161ad4e72d38810154f5.jpg" alt="Аватарка" class="avatar">
+    <div class="username">Alis</div>
+    <div class="choices" id="choices">
+      <div class="choice" data-value="800">
+        <img src="https://i.ibb.co/Rp6TRpDg/Robux-2019-Logo-gold-svg.png" alt="robux"><span>800</span>
+      </div>
+      <div class="choice" data-value="1700">
+        <img src="https://i.ibb.co/Rp6TRpDg/Robux-2019-Logo-gold-svg.png" alt="robux"><span>1,700</span>
+      </div>
+      <div class="choice" data-value="4500">
+        <img src="https://i.ibb.co/Rp6TRpDg/Robux-2019-Logo-gold-svg.png" alt="robux"><span>4,500</span>
+      </div>
+      <div class="choice" data-value="10000">
+        <img src="https://i.ibb.co/Rp6TRpDg/Robux-2019-Logo-gold-svg.png" alt="robux"><span>10,000</span>
+      </div>
+    </div>
+    <button class="confirm-btn" id="confirmBtn">Confirm</button>
+  </div>
+  <div class="sending-block" id="sendingBlock">
+    <img src="https://i.ibb.co/Rp6TRpDg/Robux-2019-Logo-gold-svg.png" alt="robux" class="sending-robux">
+    <div class="sending-text">Sending roblox<span class="dot one">.</span><span class="dot two">.</span><span class="dot three">.</span></div>
+    <div class="loader"></div>
+  </div>
+  <footer>
+    <span>&copy; 2025 Roblox UI Example</span>
+  </footer>
+  <script>
+    // Выбор количества монет
+    const choices = document.querySelectorAll('.choice');
+    let selected = null;
+    choices.forEach(choice => {
+      choice.addEventListener('click', () => {
+        choices.forEach(c => c.classList.remove('selected'));
+        choice.classList.add('selected');
+        selected = choice.dataset.value;
+      });
+    });
+
+    // Кнопка confirm
+    const confirmBtn = document.getElementById('confirmBtn');
+    const mainContent = document.getElementById('main-content');
+    const sendingBlock = document.getElementById('sendingBlock');
+    confirmBtn.addEventListener('click', () => {
+      if (!selected) {
+        alert('Выберите количество монет!');
+        return;
+      }
+      mainContent.style.display = 'none';
+      sendingBlock.style.display = 'flex';
+    });
+  </script>
+</body>
+</html>
